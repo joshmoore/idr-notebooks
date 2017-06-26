@@ -161,6 +161,13 @@ def connection(host=None, user=None, password=None, port=4064):
     c.createSession(user, password)
     conn = BlitzGateway(client_obj=c)
 
+    try:
+        conn.close
+    except:
+        def close(*args, **kwargs):
+            c.__del__()
+        conn.close = close
+
     # You are now logged in. In order to guarantee
     # that the connection is closed if a notebook
     # does not complete, we are installing a handler
